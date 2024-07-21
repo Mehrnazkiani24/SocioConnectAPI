@@ -1,4 +1,4 @@
-const { User, Thoughtt } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
   // Get all users
@@ -7,6 +7,7 @@ module.exports = {
       const users = await User.find().populate('thoughts');
       res.json(users);
     } catch (err) {
+      console.log('Error fetching user: ' , err);
       res.status(500).json(err);
     }
   },
@@ -29,8 +30,11 @@ module.exports = {
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
-      res.json(user);
+      res.status(201).json(user);
     } catch (err) {
+      if(err.code === 11000){
+        return res.status(400).json({message: "Duplicate key error"});
+      }
       console.log(err);
       return res.status(500).json(err);
     }
