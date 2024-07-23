@@ -1,42 +1,42 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
-const dayjs = require("dayjs")
+const dayjs = require("dayjs");
 
-const timestamp = (toDate) =>{
-  return dayjs(toDate).format(" MM/DD/YYYY hh:mm:ss")
-}
-// Schema to create Student model
+const timestamp = (toDate) => {
+  return dayjs(toDate).format("MM/DD/YYYY hh:mm:ss");
+};
+
 const thoughtSchema = new Schema(
   {
-    thoughttext: {
+    thoughtText: {
       type: String,
       required: true,
-      max_length: 50,
+      maxlength: 280,
     },
     username: {
       type: String,
       required: true,
-      max_length: 50,
     },
-    createAt: {
+    createdAt: {
       type: Date,
-      required: true,
-      default:Date.now,
-      get: time => timestamp(time)
+      default: Date.now,
+      get: time => timestamp(time),
     },
     reactions: [reactionSchema],
   },
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
+    id: false,
   }
 );
 
-thoughtSchema.virtual("reactionCount").get(function(){
-  return this.reactions.length
-})
+thoughtSchema.virtual("reactionCount").get(function() {
+  return this.reactions.length;
+});
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;

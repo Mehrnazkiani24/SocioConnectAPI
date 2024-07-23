@@ -1,29 +1,29 @@
 const { Schema, Types } = require('mongoose');
-const dayjs = require("dayjs")
-const timestamp = (toDate) =>{
-  return dayjs(toDate).format(" MM/DD/YYYY hh:mm:ss")
-}
+const dayjs = require("dayjs");
+
+const timestamp = (toDate) => {
+  return dayjs(toDate).format("MM/DD/YYYY hh:mm:ss");
+};
+
 const reactionSchema = new Schema(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
-    reactionbody: {
+    reactionBody: {
       type: String,
       required: true,
-      maxlength: 50,
-      minlength: 4,
+      maxlength: 280,
     },
     username: {
       type: String,
       required: true,
     },
-    createAt: {
+    createdAt: {
       type: Date,
-      required: true,
-      default:Date.now,
-      get: time => timestamp(time)
+      default: Date.now,
+      get: time => timestamp(time),
     },
   },
   {
